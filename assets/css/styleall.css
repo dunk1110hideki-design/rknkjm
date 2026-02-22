@@ -1,0 +1,399 @@
+@charset "UTF-8";
+
+/* =========================================================
+   RESET
+========================================================= */
+html {
+    font-size: 62.5%;
+    scroll-behavior: smooth;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    cursor: none !important;
+}
+
+ul,
+li {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+body {
+    font-family: "Noto Sans JP", sans-serif;
+    color: #575757;
+    line-height: 1.7;
+    padding: 0 5vw;
+    cursor: none !important;
+}
+/* =========================================================
+   PAGE TRANSITION
+========================================================= */
+#page-transition {
+    position: fixed;
+    inset: 0;
+    background: #ffffff;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 999999;
+    transition: opacity .6s ease;
+}
+
+#page-transition.active {
+    opacity: 1;
+}
+/* =========================================================
+   CURSOR
+========================================================= */
+.cursor {
+    position: fixed;
+    width: 2vw;
+    height: 2vw;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, .75);
+    pointer-events: none !important;
+    transform: translate(-50%, -50%);
+    transition: width .25s ease, height .25s ease, background .25s ease;
+    z-index: 99999 !important;
+    mix-blend-mode: difference;
+    isolation: isolate;
+}
+
+.cursor-text {
+    position: fixed;
+    font-size: 1.2rem;
+    font-weight: 500;
+    pointer-events: none;
+    color: #ffffff;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    transition: opacity .25s ease;
+    z-index: 99999 !important;
+    mix-blend-mode: difference;
+    isolation: isolate;
+}
+
+.cursor.active {
+    width: 6vw;
+    height: 6vw;
+    background: rgb(111, 111, 111);
+    mix-blend-mode: difference;
+}
+
+.cursor-text.active {
+    opacity: 1;
+}
+
+.cursor-hover {
+    cursor: none !important;
+}
+
+/* SP：カーソル非表示 */
+@media (max-width: 1024px) {
+    .cursor,
+    .cursor-text {
+        display: none !important;
+    }
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    padding: 3vw;
+    justify-content: space-between;
+    z-index: 99;
+}
+
+.headerlogo {
+    background-image: url(../img/style/headerlogo.png);
+    background-position: center;
+    background-size: cover;
+    width: 4vw;
+    height: 4vw;
+}
+
+header ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5vw;
+}
+
+header ul li a {
+    position: relative;
+    display: inline-block;
+    padding: .2em .4em;
+    text-decoration: none;
+    color: #222;
+    font-size: 1.6rem;
+    transition: color .45s ease;
+}
+
+header ul li a::after {
+    content: "";
+    position: absolute;
+    top: 70%;
+    left: -10%;
+    width: 120%;
+    height: 2px;
+    background: #222;
+    transform: rotate(-20deg) scaleX(0);
+    transform-origin: left center;
+    transition: transform .55s cubic-bezier(.25, .8, .25, 1);
+    pointer-events: none;
+}
+
+header ul li a:hover {
+    color: #111;
+}
+
+header ul li a:hover::after {
+    transform: rotate(-20deg) scaleX(1);
+}
+
+header ul li a.is-anim::after {
+    transform: translate(-50%, -50%) rotate(-30deg) scaleX(1);
+}
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+.page {
+    display: flex;
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+    padding: 2vw 5vw;
+}
+
+.fv-container {
+    display: flex;
+    padding: 1vw 10vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.fv {
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: flex;
+    width: 100%;
+    height: 32vw;
+    transition: opacity .6s ease;
+    opacity: 1;
+}
+
+.fv.fade-out {
+    opacity: 0;
+}
+
+/* =========================================================
+   FILTER TAGS
+========================================================= */
+.filter-bar {
+    width: 100%;
+    overflow-x: auto;
+    padding: 1vw 0;
+    -webkit-overflow-scrolling: touch;
+}
+
+.filter-track {
+    display: flex;
+    justify-content: center;
+    gap: 1vw;
+    padding-bottom: .5vw;
+}
+
+.filter-bar::-webkit-scrollbar {
+    display: none;
+}
+
+/* =========================================================
+   FILTER TAGS – Hover fix + animation
+========================================================= */
+.filter-tag {
+    position: relative;
+    z-index: 10;
+    padding: .5em 1.4em;
+    border: 1px solid #333;
+    border-radius: 20px;
+    background: #fff;
+    color: #333;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 
+        background .3s ease,
+        color .3s ease,
+        transform .3s cubic-bezier(.25,.8,.25,1),
+        box-shadow .3s ease;
+}
+.filter-tag:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+.filter-tag.active {
+    background: #111;
+    color: #fff;
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+}
+/* =========================================================
+   THUMBNAIL CAROUSEL
+========================================================= */
+.other-container {
+    display: flex;
+    width: 80vw;
+    gap: 1vw;
+    padding: 1vw 0;
+    overflow-x: auto;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    border-top: 1px solid #575757;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.other-container::-webkit-scrollbar {
+    display: none;
+}
+
+.other-container.dragging {
+    cursor: grabbing;
+    scroll-behavior: auto;
+}
+
+.other-container-img {
+    background-position: center;
+    background-size: cover;
+    flex: 0 0 calc((80vw - 4vw) / 5);
+    width: calc((80vw - 4vw) / 5);
+    height: calc((80vw - 4vw) / 5);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity .6s ease, transform .6s ease, outline .25s, transform .25s;
+}
+
+.other-container-img.loaded {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.other-container-img.active {
+    transform: scale(1.05);
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+footer {
+    margin: 5vw auto 0;
+    border-top: 1px solid rgba(57, 57, 57, 0.3);
+    padding-top: 6vw;
+    z-index: 1000;
+}
+
+.footer-title p {
+    font-family: "Roboto", sans-serif;
+    font-size: 3rem;
+    color: #575757;
+    margin-bottom: 3vw;
+}
+
+.footer-box {
+    display: flex;
+    gap: 50px;
+    font-size: 18px;
+}
+
+.footer-box a {
+    font-size: 16px;
+    color: #86b3ac;
+    letter-spacing: 0.3px;
+}
+
+.footer-box a:hover {
+    opacity: 0.6;
+}
+
+.copy {
+    text-align: center;
+    font-size: 12px;
+    margin-top: 30px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 1024px) {
+
+    html,
+    body {
+        padding: 0;
+        overflow-x: hidden;
+    }
+
+    header {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 4vw 5vw;
+    }
+
+    header ul {
+        gap: 6vw;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    header ul li a {
+        font-size: 1.2rem;
+    }
+
+    .page {
+        align-items: center;
+    }
+
+    .fv-container {
+        width: 100%;
+        height: 80vh;
+    }
+
+    .fv {
+        height: 80vh;
+    }
+
+    .filter-tag {
+        padding: 0 3vw;
+    }
+}
+
+@media (max-width: 1024px) {
+    footer {
+        padding: 5vw;
+        margin: 0 auto 0;
+    }
+
+    .footer-title p {
+        font-size: 2rem;
+    }
+
+    .footer-box a {
+        font-size: 1.2rem;
+    }
+}
