@@ -49,7 +49,6 @@ body {
     transform: translate(-50%, -50%);
     transition: width .25s ease, height .25s ease, background .25s ease;
     z-index: 99999 !important;
-    mix-blend-mode: difference;
     isolation: isolate;
 }
 
